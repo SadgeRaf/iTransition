@@ -1,5 +1,8 @@
 {
-  "name": "itransition",
+  "name": "itransition-lcm",
   "version": "1.0.0",
-  "main": "api/khalilurrafsun_gmail_com.js"
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  }
 }

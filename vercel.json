@@ -2,18 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "api/khalilurrafsun_gmail_com.js",
+      "src": "server.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
-      "src": "/khalilurrafsun_gmail_com",
-      "dest": "/api/khalilurrafsun_gmail_com"
-    },
-    {
-      "src": "/app/khalilurrafsun_gmail_com",
-      "dest": "/api/khalilurrafsun_gmail_com"
+      "src": "/(.*)",
+      "dest": "server.js"
     }
   ]
 }
