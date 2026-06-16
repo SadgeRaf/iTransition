@@ -1,8 +1,5 @@
 {
   "name": "itransition",
   "version": "1.0.0",
-  "main": "server.js",
-  "scripts": {
-    "start": "node server.js"
-  }
+  "main": "api/khalilurrafsun_gmail_com.js"
 }
