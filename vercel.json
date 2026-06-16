@@ -8,8 +8,8 @@
   ],
   "routes": [
     {
-      "src": "/app/khalilurrafsun_@_gmail_com",
-      "dest": "/server.js"
+      "src": "/(.*)",
+      "dest": "server.js"
     }
   ]
 }
