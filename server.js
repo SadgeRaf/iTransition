@@ -1,48 +1,41 @@
-module.exports = (req, res) => {
-    const url = new URL(req.url, `http://${req.headers.host}`);
-    const pathname = url.pathname;
-    
-    // Check if path ends with khalilurrafsun_gmail_com
-    if (!pathname.endsWith('khalilurrafsun_gmail_com')) {
-        res.statusCode = 404;
-        res.setHeader('Content-Type', 'text/plain');
-        return res.end('Not Found');
+const express = require("express");
+
+const app = express();
+
+function gcd(a, b) {
+    while (b !== 0) {
+        [a, b] = [b, a % b];
     }
-    
-    const x = url.searchParams.get('x');
-    const y = url.searchParams.get('y');
-    
-    function isNaturalNumber(value) {
-        if (value === null || value === undefined || value === '') return false;
-        const num = Number(value);
-        return Number.isInteger(num) && num > 0;
-    }
-    
-    function gcd(a, b) {
-        while (b !== 0) {
-            [a, b] = [b, a % b];
-        }
-        return Math.abs(a);
-    }
-    
-    function lcm(a, b) {
-        if (a === 0 || b === 0) return 0;
-        return Math.abs(a * b) / gcd(a, b);
-    }
-    
-    res.setHeader('Content-Type', 'text/plain');
-    
-    if (x === null || y === null) {
-        return res.status(200).send('NaN');
-    }
-    
-    if (!isNaturalNumber(x) || !isNaturalNumber(y)) {
-        return res.status(200).send('NaN');
-    }
-    
+    return a;
+}
+
+function lcm(a, b) {
+    return (a * b) / gcd(a, b);
+}
+
+app.get("/khalilurrafsun_gmail_com", (req, res) => {
+    const { x, y } = req.query;
+
     const numX = Number(x);
     const numY = Number(y);
-    const result = lcm(numX, numY);
-    
-    res.status(200).send(String(result));
-};
+
+    const isNatural =
+        Number.isInteger(numX) &&
+        Number.isInteger(numY) &&
+        numX > 0 &&
+        numY > 0;
+
+    res.type("text/plain");
+
+    if (!isNatural) {
+        return res.send("NaN");
+    }
+
+    return res.send(String(lcm(numX, numY)));
+});
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});

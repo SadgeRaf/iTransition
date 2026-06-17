@@ -1,8 +1,13 @@
 {
-  "name": "itransition-lcm",
-  "version": "1.0.0",
-  "main": "server.js",
-  "scripts": {
-    "start": "node server.js"
-  }
+    "name": "task-3",
+    "version": "1.0.0",
+    "description": "Simple Express server for Task 3",
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js"
+    },
+    "dependencies": {
+        "express": "^4.19.2",
+        "vercel": "^54.13.0"
+    }
 }

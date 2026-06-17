@@ -1,39 +1,38 @@
-module.exports = (req, res) => {
-    const url = new URL(req.url, `http://${req.headers.host}`);
-    const x = url.searchParams.get('x');
-    const y = url.searchParams.get('y');
-    
-    function isNaturalNumber(value) {
-        if (value === null || value === undefined || value === '') return false;
-        const num = Number(value);
-        return Number.isInteger(num) && num > 0;
+
+export default function handler(req, res) {
+    // Only allow GET
+    if (req.method !== 'GET') {
+        return res.status(405).send('Method Not Allowed');
     }
-    
+
+    const { x, y } = req.query;
+
+    // Validate: must be present, must be strings of digits only, no decimals, no negatives
+    const isNatural = (val) => {
+        if (val === undefined || val === null) return false;
+        if (!/^\d+$/.test(val)) return false;         // only digits
+        const n = parseInt(val, 10);
+        return Number.isInteger(n) && n >= 1;          // must be >= 1 (natural number)
+    };
+
+    if (!isNatural(x) || !isNatural(y)) {
+        res.setHeader('Content-Type', 'text/plain');
+        return res.status(200).send('NaN');
+    }
+
+    const a = BigInt(x);
+    const b = BigInt(y);
+
+    // GCD via Euclidean algorithm
     function gcd(a, b) {
-        while (b !== 0) {
+        while (b !== 0n) {
             [a, b] = [b, a % b];
         }
-        return Math.abs(a);
+        return a;
     }
-    
-    function lcm(a, b) {
-        if (a === 0 || b === 0) return 0;
-        return Math.abs(a * b) / gcd(a, b);
-    }
-    
+
+    const lcm = (a * b) / gcd(a, b);
+
     res.setHeader('Content-Type', 'text/plain');
-    
-    if (x === null || y === null) {
-        return res.status(200).send('NaN');
-    }
-    
-    if (!isNaturalNumber(x) || !isNaturalNumber(y)) {
-        return res.status(200).send('NaN');
-    }
-    
-    const numX = Number(x);
-    const numY = Number(y);
-    const result = lcm(numX, numY);
-    
-    res.status(200).send(String(result));
-};
+    return res.status(200).send(lcm.toString());
+}
